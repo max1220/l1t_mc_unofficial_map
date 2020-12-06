@@ -1,0 +1,2 @@
+OFFSET_X = 100;
+OFFSET_Y = 100;

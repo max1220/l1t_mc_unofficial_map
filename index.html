@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>L1T unofficial dynmap</title>
+
+		<!-- Base stylesheet from my website. Too lazy to do something special. YMMV -->
+		<link rel="stylesheet" href="style.css">
+		<style>
+			body {
+				background-color: #000;
+			}
+			#map {
+				background-image: url("map.png");
+				background-repeat: no-repeat;
+				background-blend-mode: multiply;
+				image-rendering: pixelated;
+				image-rendering: -moz-crisp-edges;
+				image-rendering: crisp-edges;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100vw;
+				height: 100vh;
+				z-index: -100;
+			}
+			#top_left_info {
+				position: absolute;
+				left: 1em;
+				top: 1em;
+				background-color: rgba(255,255,255,0.8);
+				border-radius: 3px;
+				color: #333;
+				font-size: 125%;
+				padding: 10px 10px;
+				display: none;
+			}
+			#indicator {
+				position: absolute;
+				left: 10em;
+				top: 10em;
+				padding: 3px 3px;
+				background-color: rgba(255,255,255,0.8);
+				border-radius: 2px;
+				color: #333;
+				display: none;
+			}
+			.header-bg {
+				background-image: url("bg.png"), linear-gradient(#CCC, #000);
+				background-size: 512px 512px;
+				background-blend-mode: multiply;
+				image-rendering: pixelated;
+				image-rendering: -moz-crisp-edges;
+				image-rendering: crisp-edges;
+				animation-name: scroll-bg;
+				animation-duration: 20s;
+				animation-iteration-count: infinite;
+				animation-timing-function: linear;
+			}
+			.map-iframe {
+				width: 100%;
+				height: 400px;
+			}
+			@keyframes scroll-bg {
+				from { background-position: 0px 0px; }
+				to { background-position: 512px 0px; }
+			}
+		</style>
+	</head>
+	<body>
+
+		<!-- This pseudo-element is fileld by javascript and contains the map and handles clicks -->
+		<div id="map"></div>
+
+		<!-- This element will contains the positiont the user clicked on as text -->
+		<div id="top_left_info">
+			Scroll:<span id="scroll">0</span>
+		</div>
+
+		<div id="indicator">
+			Pos:<span id="position"></span>
+		</div>
+
+		<!-- This entire div all of the page content is hidden from javascript when the user closes the dialog -->
+		<div id="main_dialog">
+
+			<!-- Page header, with minecraft blocks background and page title -->
+			<div class="header-bg modal-header modal-wide clearfix">
+				<div class="modal clearfix">
+					<div class="col-4">
+						<h1>L1T unofficial Dynmap</h1>
+					</div>
+					<div class="col-2">
+						<p>This is an unofficial Minecraft Dynmap for the Level1Techs minecraft server.</p>
+						<btn id="close_button" class="btn btn-large btn-blue">Close this dialog</btn>
+					</div>
+				</div>
+			</div>
+
+			<!-- Page content -->
+			<div class="modal modal-wide">
+				<div class="modal">
+					<p class="lead">
+						This Dynmap works completely client-side.<br>
+						I use Xaero's World Map, specifically the export png feature to make this work.<br>
+						Below is an explanation of how to set up something like this yourself.<br>
+					</p>
+					<h3>
+						Getting started guide(linux)
+					</h3>
+					<p>
+						Install <a href="http://files.minecraftforge.net/">Forge</a>, Install <a href="https://www.curseforge.com/minecraft/mc-mods/xaeros-world-map">Xaero's World Map</a>.<br>
+						Clone <a href="#">this repo</a> somewhere, and run the <code>./start.sh</code> script.<br>
+						It should automatically create a symlink from <code>~/.minecraft/map exports/</code> to <code>data/</code>,<br>
+						and then start the busybox-included tiny httpd. in this directory.<br>
+						The rest happens in Javascript on the client.<br>
+					</p>
+					<p>
+						<b>
+							This is an unofficial Dynmap. I am not affiliated with Level1Techs, or the L1T minecraft server.
+						 	Use at your own risk. No gurantees.
+						</b>
+						<br>
+						Made in 2020 by max1220.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- this only contains the "!correction factor"(offset) for the image->pixel corrdinates -->
+		<script type="text/javascript" src="offsets.js"></script>
+
+		<!-- this makes the magic work. Handles dragging on the map, all buttons etc. -->
+		<script type="text/javascript" src="main.js"></script>
+
+	</body>
+</html>
