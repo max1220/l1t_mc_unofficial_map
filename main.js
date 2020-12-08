@@ -32,29 +32,46 @@ var drag_threshold = 10;
 
 var markers = []
 update_markers = function() {
+	if (scale != 1) {
+		markers.forEach(function(elem, index) {
+			elem.html_elem.style.display = "none";
+		})
+		return;
+	}
 	markers.forEach(function(elem, index) {
-		var screen_x = elem.coord_x*scale-(scroll_x+dx+OFFSET_X)
-		var screen_y = elem.coord_y*scale-(scroll_y+dy+OFFSET_Y)
-		elem.html_elem.style.left = screen_x+"px"
-		elem.html_elem.style.top = screen_y+"px"
-	})
+		var screen_x = elem.coord_x-(scroll_x+dx+OFFSET_X);
+		var screen_y = elem.coord_y-(scroll_y+dy+OFFSET_Y);
+		console.log("New marker screen position for " + elem.name + ": " + screen_x + ", " + screen_y);
+		elem.html_elem.style.left = screen_x+"px";
+		elem.html_elem.style.top = screen_y+"px";
+		elem.html_elem.style.display = "block";
+	});
 }
 add_marker = function(coord_x, coord_y, name) {
-	var html_elem = document.createElement("div")
-	html_elem.classList += "marker";
-	markers_elem.appendChild(html_elem);
+	console.log("Adding marker " + name + " at " + coord_x + ", " + coord_y);
+	var marker_elem = document.createElement("div");
+	marker_elem.classList += "marker tooltip";
+
+	var marker_tooltip_elem = document.createElement("span");
+	marker_tooltip_elem.classList += "tooltiptext";
+	marker_tooltip_elem.innerHTML = name;
+	marker_elem.appendChild(marker_tooltip_elem);
+
+	markers_elem.appendChild(marker_elem);
 	markers_elem.onclick = function() {
-		console.log("marker clicked!");
-		scroll_elem.innerHTML = name;
+		console.log("marker " + name + " was clicked!");
 	}
 	markers.push({
 		coord_x: coord_x,
 		coord_y: coord_y,
 		name: name,
-		html_elem: html_elem
+		html_elem: marker_elem
 	})
 	update_markers();
 }
+DEFAULT_MARKERS.forEach(function(elem, index) {
+	add_marker(elem.coord_x, elem.coord_y, elem.name);
+})
 
 
 // function to scroll the map, *not* during mouse drag
@@ -69,7 +86,7 @@ rescroll_move = function() {
 	map.style.backgroundPositionX = -(scroll_x+dx) + "px";
 	map.style.backgroundPositionY = -(scroll_y+dy) + "px";
 	scroll_elem.innerHTML = scroll_x + ", " + scroll_y;
-	update_markers()
+	update_markers();
 }
 rescroll_move();
 
@@ -77,28 +94,29 @@ rescroll_move();
 // function to set scale of map
 rescale = function(new_scale) {
 	if (new_scale==1) {
-		map.style.backgroundImage = "url(\"map.png\")"
+		map.style.backgroundImage = "url(\"map.png\")";
 		scale = 1;
 	} else if (new_scale==2) {
-		map.style.backgroundImage = "url(\"map_2x.png\")"
+		map.style.backgroundImage = "url(\"map_2x.png\")";
 		scale = 2;
 	} else if (new_scale==3) {
-		map.style.backgroundImage = "url(\"map_3x.png\")"
+		map.style.backgroundImage = "url(\"map_3x.png\")";
 		scale = 3;
 	} else if (new_scale==4) {
-		map.style.backgroundImage = "url(\"map_4x.png\")"
+		map.style.backgroundImage = "url(\"map_4x.png\")";
 		scale = 4;
 	}
-	unindicator()
+	unindicator();
+	update_markers();
 }
 zoom_in_elem.onclick = function() {
 	if (scale<4) {
-		rescale(scale+1)
+		rescale(scale+1);
 	}
 }
 zoom_out_elem.onclick = function() {
 	if (scale>1) {
-		rescale(scale-1)
+		rescale(scale-1);
 	}
 }
 
@@ -108,7 +126,7 @@ zoom_out_elem.onclick = function() {
 
 
 // add a position indicator for a click
-var has_indicator = false
+var has_indicator = false;
 indicator = function(client_x, client_y) {
 	console.log("Showing indicator...");
 	indicator_elem.style.display = "block";
@@ -117,8 +135,8 @@ indicator = function(client_x, client_y) {
 
 	var pos_x = (client_x+scroll_x)*(1/scale)+OFFSET_X;
 	var pos_y = (client_y+scroll_y)*(1/scale)+OFFSET_Y;
-	position_elem.innerHTML = Math.floor(pos_x) + ", " + Math.floor(pos_y)
-	has_indicator = true
+	position_elem.innerHTML = Math.floor(pos_x) + ", " + Math.floor(pos_y);
+	has_indicator = true;
 }
 // hide indicator
 unindicator = function() {
@@ -136,18 +154,18 @@ unindicator = function() {
 map.onmousedown = function(ev) {
 	console.log("down",ev);
 	mouse_down = true;
-	mouse_down_x = ev.clientX
-	mouse_down_y = ev.clientY
+	mouse_down_x = ev.clientX;
+	mouse_down_y = ev.clientY;
 }
 map.onmouseup = function(ev) {
 	console.log("up",ev);
 	mouse_down = false;
 	if (dx > drag_threshold || dx > drag_threshold || dx < -drag_threshold || dx < -drag_threshold) {
 		// mouse was "dragged", scroll map
-		rescroll(scroll_x + dx, scroll_y + dy)
+		rescroll(scroll_x + dx, scroll_y + dy);
 	} else {
 		// no mouse drag, show a position indicator
-		indicator(ev.clientX, ev.clientY)
+		indicator(ev.clientX, ev.clientY);
 	}
 	dx = 0;
 	dy = 0;
@@ -156,7 +174,7 @@ map.onmousemove = function(ev) {
 	//console.log("move",ev,mouse_down);
 	if (dx > drag_threshold || dx > drag_threshold || dx < -drag_threshold || dx < -drag_threshold) {
 		// We're dragging the mouse, hide the indicator
-		unindicator()
+		unindicator();
 	}
 	if (mouse_down) {
 		// Drag the map
@@ -171,8 +189,8 @@ map.onmousemove = function(ev) {
 map.ontouchstart = function(ev) {
 	console.log("touch down",ev);
 	mouse_down = true;
-	mouse_down_x = ev.touches[0].clientX
-	mouse_down_y = ev.touches[0].clientY
+	mouse_down_x = ev.touches[0].clientX;
+	mouse_down_y = ev.touches[0].clientY;
 }
 map.ontouchend = function(ev) {
 	console.log("touch up",ev);
@@ -184,7 +202,7 @@ map.ontouchend = function(ev) {
 map.ontouchmove = function(ev) {
 	console.log("touch move",ev.targetTouches[0].clientX, ev.targetTouches[0].clientY, ev);
 	if (dx > drag_threshold || dx > drag_threshold || dx < -drag_threshold || dx < -drag_threshold) {
-		unindicator()
+		unindicator();
 	}
 	if (mouse_down) {
 		dx = mouse_down_x-ev.targetTouches[0].clientX;
