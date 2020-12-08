@@ -2,11 +2,11 @@
 DATADIR="data"
 
 while true; do
+	# make sure an entire image has been written
+	sleep 5;
+
 	# update the map symlink
 	./update.sh
-
-	# make sure we're not spamming...
-	sleep 10;
 
 	# wait for modified files in data/
 	inotifywait ${DATADIR}
