@@ -60,6 +60,7 @@
 				padding: 0 0;
 				width: 1em;
 				height: 1em;
+				border-bottom: 1px solid rgba(0,0,0,0.7);
 			}
 			.header-bg {
 				background-image: url("bg.png"), linear-gradient(#CCC, #000);
@@ -73,6 +74,46 @@
 				animation-iteration-count: infinite;
 				animation-timing-function: linear;
 			}
+
+			/* Adapted from https://www.w3schools.com/howto/howto_css_tooltip.asp */
+			.tooltip {  /* Tooltip "trigger element" */
+			}
+			.tooltip .tooltiptext { /* Tooltip "body" */
+				visibility: hidden;
+				width: 120px;
+				background-color: #555;
+				color: #fff;
+				text-align: center;
+				padding: 5px 0;
+				border-radius: 6px;
+
+				/* Position the tooltip text */
+				position: absolute;
+				z-index: 1;
+				bottom: 125%;
+				left: 50%;
+				margin-left: -60px;
+
+				/* Fade in tooltip */
+				opacity: 0;
+				transition: opacity 0.3s;
+			}
+			.tooltip .tooltiptext::after { /* Tooltip arrow */
+				content: "";
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				margin-left: -5px;
+				border-width: 5px;
+				border-style: solid;
+				border-color: #555 transparent transparent transparent;
+			}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
 		</style>
 	</head>
 	<body>
@@ -80,19 +121,19 @@
 		<!-- This pseudo-element is fileld by javascript and contains the map and handles clicks -->
 		<div id="map"></div>
 
-		<!-- This element will contains the positiont the user clicked on as text -->
-		<div id="top_left_info">
-			<span id="scroll">0</span>
-			<button class="btn btn-small btn-blue" id="zoom_in">+</button>
-			<button class="btn btn-small btn-blue" id="zoom_out">-</button>
-		</div>
-
 		<div id="indicator">
 			<span id="position"></span>
 		</div>
 
 		<!-- This element will contain all map markers -->
 		<div id="markers">
+		</div>
+
+		<!-- This element will contains the positiont the user clicked on as text -->
+		<div id="top_left_info">
+			<span id="scroll">0</span>
+			<button class="btn btn-small btn-blue" id="zoom_in">+</button>
+			<button class="btn btn-small btn-blue" id="zoom_out">-</button>
 		</div>
 
 		<!-- This entire div all of the page content is hidden from javascript when the user closes the dialog -->
