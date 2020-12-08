@@ -47,6 +47,20 @@
 				color: #333;
 				display: none;
 			}
+			#markers {
+
+			}
+			.marker {
+				position: absolute;
+				display: block;
+				background-color: rgba(255,255,255,0.7);
+				border-radius: 1em;
+				margin-left: -0.5em;
+				margin-top: -0.5em;
+				padding: 0 0;
+				width: 1em;
+				height: 1em;
+			}
 			.header-bg {
 				background-image: url("bg.png"), linear-gradient(#CCC, #000);
 				background-size: 512px 512px;
@@ -68,13 +82,17 @@
 
 		<!-- This element will contains the positiont the user clicked on as text -->
 		<div id="top_left_info">
-			Scroll:<span id="scroll">0</span>
+			<span id="scroll">0</span>
 			<button class="btn btn-small btn-blue" id="zoom_in">+</button>
 			<button class="btn btn-small btn-blue" id="zoom_out">-</button>
 		</div>
 
 		<div id="indicator">
-			Pos:<span id="position"></span>
+			<span id="position"></span>
+		</div>
+
+		<!-- This element will contain all map markers -->
+		<div id="markers">
 		</div>
 
 		<!-- This entire div all of the page content is hidden from javascript when the user closes the dialog -->
@@ -100,15 +118,18 @@
 						This Dynmap works completely client-side.<br>
 						I use Xaero's World Map, specifically the export png feature to make this work.<br>
 						Below is an explanation of how to set up something like this yourself.<br>
+						<br>
+						<b>Because this is image-based, this needs calibration, and therefore the positions are not always accurate!</b>
 					</p>
 					<h3>
 						Getting started guide(linux)
 					</h3>
 					<p>
 						Install <a href="http://files.minecraftforge.net/">Forge</a>, Install <a href="https://www.curseforge.com/minecraft/mc-mods/xaeros-world-map">Xaero's World Map</a>.<br>
-						Clone <a href="#">this repo</a> somewhere, and run the <code>./start.sh</code> script.<br>
+						Clone <a href="https://github.com/max1220/l1t_mc_unofficial_map">this repo</a> somewhere, and run the <code>./start.sh</code> script.<br>
 						It should automatically create a symlink from <code>~/.minecraft/map exports/</code> to <code>data/</code>,<br>
 						and then start the busybox-included tiny httpd. in this directory.<br>
+						You need to have imagemagic(for the convert tool), and inotify-tools installed and available in your <code>$PATH</code>.
 						The rest happens in Javascript on the client.<br>
 					</p>
 					<p>
