@@ -1,8 +1,8 @@
-OFFSET_X = -1025;
-OFFSET_Y = -919;
-// Web Position was 1144, 1228
+OFFSET_X = -512;
+OFFSET_Y = -2048;
+// Web Position was 631, 1739
 // MC Position was 119, -309
-// wp_new = (mc-wp)
+// offset = (mc-wp)
 
 DEFAULT_SCROLL_X = 600;
 DEFAULT_SCROLL_Y = 800;
