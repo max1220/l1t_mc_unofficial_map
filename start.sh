@@ -10,4 +10,4 @@ fi
 ./watch.sh &
 
 # start httpd.
-busybox httpd -v -f -p 8080
+busybox httpd -v -f -p 8080 | tee -a httpd_log.txt
