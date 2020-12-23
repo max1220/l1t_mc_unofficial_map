@@ -105,19 +105,35 @@ rescale = function(new_scale) {
 	} else if (new_scale==4) {
 		map.style.backgroundImage = "url(\"map_4x.png\")";
 		scale = 4;
+	} else if (new_scale==0.5) {
+		map.style.backgroundImage = "url(\"map_05.png\")";
+		scale = 0.5;
+	} else if (new_scale==0.2) {
+		map.style.backgroundImage = "url(\"map_02.png\")";
+		scale = 0.2;
+	} else if (new_scale==0.1) {
+		map.style.backgroundImage = "url(\"map_01.png\")";
+		scale = 0.1;
 	}
 	unindicator();
 	update_markers();
+	rescroll(DEFAULT_SCROLL_X*(1/scale), DEFAULT_SCROLL_Y*(1/scale));
 }
+var avail_scales = [0.1, 0.2, 0.5, 1, 2, 3, 4];
+var cur_scale = 4;
 zoom_in_elem.onclick = function() {
-	if (scale<4) {
-		rescale(scale+1);
+	if (cur_scale<avail_scales.length) {
+		cur_scale += 1;
+		rescale(avail_scales[cur_scale]);
 	}
+	console.log("Zoom in: " + scale + "(" + cur_scale + ")")
 }
 zoom_out_elem.onclick = function() {
-	if (scale>1) {
-		rescale(scale-1);
+	if (cur_scale>1) {
+		cur_scale -= 1;
+		rescale(avail_scales[cur_scale]);
 	}
+	console.log("Zoom out: " + scale + "(" + cur_scale + ")")
 }
 
 

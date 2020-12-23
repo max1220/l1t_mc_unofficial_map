@@ -11,6 +11,9 @@ cp -v ${LAST} map.png
 convert ${LAST} -scale 200% map_2x.png
 convert ${LAST} -scale 300% map_3x.png
 convert ${LAST} -scale 400% map_4x.png
+convert ${LAST} -scale 50% map_05.png
+convert ${LAST} -scale 20% map_02.png
+convert ${LAST} -scale 10% map_01.png
 #convert ${LAST} -scale 800% map_8x.png
 
 tar --exclude-vcs --exclude="archive.tar" --exclude="data" -vczf archive.tar .
