@@ -1,5 +1,7 @@
 # Unofficial L1T Minecraft Dynmap
 
+https://mc.max1220.de/l1t_unofficial_dynmap/
+
 This Dynmap works completely client-side.
 I use Xaero's World Map, specifically the export png feature to make this work.
 Below is an explanation of how to set up something like this yourself.
